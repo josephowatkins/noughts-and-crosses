@@ -1,4 +1,6 @@
 (ns noughts-and-crosses.core
+  (require [clojure.java.io :as io]
+           [clojure.data.json :as json])
   (:gen-class))
 
 (defn map-peice [input peice]
@@ -29,4 +31,19 @@
   (let [x (count-peice x? board)
         o (count-peice o? board)]
     (<= (Math/abs (- x o)) 1)))
+
+
+(with-open [reader (io/reader (io/resource "test.json"))]
+  (json/read reader))
+
+(defn str->keyword [s]
+  (keyword s))
+
+(defn map-nested-vector [f coll]
+  (loop [vx coll acc []]
+    (if (not-empty vx)
+      (recur
+        (rest vx)
+        (conj acc (into [] (map f (first vx)))))
+      acc)))
 
