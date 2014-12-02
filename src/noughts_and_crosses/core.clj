@@ -1,49 +1,26 @@
 (ns noughts-and-crosses.core
-  (require [clojure.java.io :as io]
-           [clojure.data.json :as json])
-  (:gen-class))
+  (require [noughts-and-crosses.board-check :as check]) )
 
-(defn map-peice [input peice]
-  (if (= peice input)
-    1
-    0))
+; function takes in map of the board and
+; current piece turn.
 
-(def x? (partial map-peice :X))
-(def o? (partial map-peice :O))
+(defn illegal-map [map]
+  (assoc map :legal false))
+(defn legal-map [map]
+  (assoc map :legal true))
 
-(defn count-peice [f board]
-  (->> board
-       (flatten)
-       (map f)
-       (reduce +)))
-
-(defn move-legal? [piece board]
-  (let [x (count-peice x? board)
-        o (count-peice o? board)]
+(defn process-map [board-map]
+  (let [{board :board piece :piece} board-map]
     (cond
-      (= 9 (+ x o)) false
-      (and (= piece :X) (<= x o)) true
-      (and (= piece :O) (<= o x)) true
-      :else false
+      (not (check/board-size-legal? board)) (illegal-map board-map)
+      (not (check/board-legal? board)) (illegal-map board-map)
+      (not (check/legal-move-available? board piece)) (illegal-map board-map)
+      :else (legal-map board-map)
       )))
 
-(defn legal-board? [board]
-  (let [x (count-peice x? board)
-        o (count-peice o? board)]
-    (<= (Math/abs (- x o)) 1)))
+; process look up board in database
 
+; send response
 
-(with-open [reader (io/reader (io/resource "test.json"))]
-  (json/read reader))
-
-(defn str->keyword [s]
-  (keyword s))
-
-(defn map-nested-vector [f coll]
-  (loop [vx coll acc []]
-    (if (not-empty vx)
-      (recur
-        (rest vx)
-        (conj acc (into [] (map f (first vx)))))
-      acc)))
+; create response
 
