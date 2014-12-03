@@ -1,6 +1,6 @@
 (ns noughts-and-crosses.board-check
-  (require [clojure.java.io :as io]
-           [clojure.data.json :as json])
+  (:require [clojure.java.io :as io]
+            [clojure.data.json :as json])
   (:gen-class))
 
 

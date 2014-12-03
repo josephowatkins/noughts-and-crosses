@@ -1,5 +1,7 @@
 (ns noughts-and-crosses.core
-  (require [noughts-and-crosses.board-check :as check]) )
+  (:require [noughts-and-crosses.board-check :as check]
+            [ring.adapter.jetty :as jetty]
+            [noughts-and-crosses.server :as server]))
 
 ; function takes in map of the board and
 ; current piece turn.
@@ -24,3 +26,5 @@
 
 ; create response
 
+(defn -main []
+  (jetty/run-jetty server/main-routes {:port 3000}))
