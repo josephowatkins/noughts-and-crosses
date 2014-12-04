@@ -3,20 +3,20 @@
             [noughts-and-crosses.core :refer :all]))
 
 
-(def legal-for-x [[:X :- :-]
-                  [:O :- :-]
-                  [:O :- :-]])
+(def legal-for-x [["X" "-" "-"]
+                  ["O" "-" "-"]
+                  ["O" "-" "-"]])
 
-(def legal-for-o [[:O :- :O]
-                  [:X :- :-]
-                  [:X :X :-]])
+(def legal-for-o [["O" "-" "O"]
+                  ["X" "-" "-"]
+                  ["X" "X" "-"]])
 
 
-(def map-legal-x {:board legal-for-x :piece :X})
-(def map-illegal-x {:board legal-for-o :piece :X})
+(def map-legal-x {:board legal-for-x :piece "X"})
+(def map-illegal-x {:board legal-for-o :piece "X"})
 
-(def map-legal-o {:board legal-for-o :piece :O})
-(def map-illegal-o {:board legal-for-x :piece :O})
+(def map-legal-o {:board legal-for-o :piece "O"})
+(def map-illegal-o {:board legal-for-x :piece "O"})
 
 
 (deftest test-process-map

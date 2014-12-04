@@ -4,43 +4,43 @@
 
 
 ; define some boards
-(def empty-board [[:- :- :-]
-                  [:- :- :-]
-                  [:- :- :-]])
+(def empty-board [["-" "-" "-"]
+                  ["-" "-" "-"]
+                  ["-" "-" "-"]])
 
-(def full-board [[:O :X :O]
-                 [:X :X :O]
-                 [:O :O :X]])
+(def full-board [["O" "X" "O"]
+                 ["X" "X" "O"]
+                 ["O" "O" "X"]])
 
-(def legal-for-x-to-move-next [[:O :X :O]
-                               [:- :- :-]
-                               [:- :- :-]])
+(def legal-for-x-to-move-next [["O" "X" "O"]
+                               ["-" "-" "-"]
+                               ["-" "-" "-"]])
 
-(def legal-for-o-to-move-next [[:X :- :-]
-                               [:O :- :-]
-                               [:X :- :-]])
+(def legal-for-o-to-move-next [["X" "-" "-"]
+                               ["O" "-" "-"]
+                               ["X" "-" "-"]])
 
 (deftest x-and-o-move-legal
-  (is (= (legal-move-available? empty-board :X) true))
-  (is (= (legal-move-available? empty-board :O) true)))
+  (is (= (legal-move-available? empty-board "X") true))
+  (is (= (legal-move-available? empty-board "O") true)))
 
 (deftest no-legal-moves
-  (is (= (legal-move-available? full-board :X) false))
-  (is (= (legal-move-available? full-board :O) false)))
+  (is (= (legal-move-available? full-board "X") false))
+  (is (= (legal-move-available? full-board "O") false)))
 
 (deftest x-can-go?
-  (is (= (legal-move-available? legal-for-x-to-move-next :X) true))
-  (is (= (legal-move-available? legal-for-x-to-move-next :O) false)))
+  (is (= (legal-move-available? legal-for-x-to-move-next "X") true))
+  (is (= (legal-move-available? legal-for-x-to-move-next "O") false)))
 
 (deftest o-can-go?
-  (is (= (legal-move-available? legal-for-o-to-move-next :O) true))
-  (is (= (legal-move-available? legal-for-o-to-move-next :X) false))
+  (is (= (legal-move-available? legal-for-o-to-move-next "O") true))
+  (is (= (legal-move-available? legal-for-o-to-move-next "X") false))
   )
 
 ; define some boards with illegal numbers of rows or columns.
-(def wrong-cols [[:X]
-                 [:- :- :-]
-                 [:O :O :-]])
+(def wrong-cols [["X"]
+                 ["-" "-" "-"]
+                 ["O" "O" "-"]])
 
 (def wrong-rows [[] [] [] [] []])
 
@@ -57,9 +57,9 @@
 
 
 ; define board with illegal differience between number of X and O's.
-(def illegal-board [[:X :X :-]
-                    [:- :X :-]
-                    [:- :O :-]])
+(def illegal-board [["X" "X" "-"]
+                    ["-" "X" "-"]
+                    ["-" "O" "-"]])
 
 (deftest illegal-move-finder
   (is (= (board-legal? illegal-board) false))
