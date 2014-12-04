@@ -1,7 +1,6 @@
 (ns noughts-and-crosses.core
   (:require [noughts-and-crosses.board-check :as check]
-            [ring.adapter.jetty :as jetty]
-            [noughts-and-crosses.server :as server]))
+            [noughts-and-crosses.minmax :as minmax]))
 
 ; function takes in map of the board and
 ; current piece turn.
@@ -22,9 +21,10 @@
 
 ; process look up board in database
 
+(defn create-next-move [board-map]
+  (let [{board :board piece :piece} board-map]
+    (assoc board-map :next-move (minmax/return-next-board board piece))))
+
 ; send response
 
 ; create response
-
-(defn -main []
-  (jetty/run-jetty server/main-routes {:port 3000}))

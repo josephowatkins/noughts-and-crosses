@@ -1,5 +1,6 @@
 (ns noughts-and-crosses.server
-  (:require clojure.pprint
+  (:require [noughts-and-crosses.core :as core]
+            clojure.pprint
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [ring.middleware.json :refer [wrap-json-body]]))
@@ -34,6 +35,8 @@
   (-> request
       (get-body-map)
       (add-player "X")
+      (core/process-map)
+      (core/create-next-move)
       (create-response)))
 
 (defroutes main-routes
