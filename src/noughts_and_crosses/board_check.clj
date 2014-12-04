@@ -3,15 +3,14 @@
             [clojure.data.json :as json])
   (:gen-class))
 
-
 ; Provide functions to check board is in the right state / legal form before passing to move generator stage.
 
 ; helper functions
 (defn x? [piece]
-  (= :X piece))
+  (= "X" piece))
 
 (defn o? [piece]
-  (= :O piece))
+  (= "O" piece))
 
 (defn count-pieces [f board]
   (->> board
@@ -54,12 +53,12 @@
         o (count-pieces o? board)]
     (cond
       (= 9 (+ x o)) false
-      (and (= piece :X) (<= x o)) true
-      (and (= piece :O) (<= o x)) true
+      (and (= piece "X") (<= x o)) true
+      (and (= piece "O") (<= o x)) true
       :else false
       )))
 
-
+;; maybe don't need to use this converter to keywords?
 (defn str->keyword [s]
   (keyword s))
 
@@ -70,7 +69,3 @@
         (rest vx)
         (conj acc (into [] (map f (first vx)))))
       acc)))
-
-
-(with-open [reader (io/reader (io/resource "test.json"))]
-  (json/read reader))
