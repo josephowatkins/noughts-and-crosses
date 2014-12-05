@@ -5,7 +5,6 @@
 
 ; Provide functions to check board is in the right state / legal form before passing to move generator stage.
 
-; helper functions
 (defn x? [piece]
   (= "X" piece))
 
@@ -18,7 +17,6 @@
        (filter f)
        (count)))
 
-; functions to check board is the right size - 3 by 3.
 (defn board-has-n-rows?
   [board rows]
   (= rows (count board)))
@@ -38,16 +36,18 @@
      ))
 
 
-(defn board-legal? [board]
+(defn board-legal?
+  "Check the difference between X and O is within legal limit- i.e. ∆ <= 1.
+  (Included to give more detailed feedback to user on error.)"
+  [board]
   (let [x (count-pieces x? board)
         o (count-pieces o? board)]
     (<= (Math/abs (- x o)) 1)))
 
 
-; fucntion to check if legal move is available
 (defn legal-move-available?
-  "Check that the board is not full & and the difference between X and O
-  permits a move to be made."
+  "Check the board is not full & and the difference between X and O permits
+  a move to be made."
   [board piece]
   (let [x (count-pieces x? board)
         o (count-pieces o? board)]
@@ -57,15 +57,3 @@
       (and (= piece "O") (<= o x)) true
       :else false
       )))
-
-;; maybe don't need to use this converter to keywords?
-(defn str->keyword [s]
-  (keyword s))
-
-(defn map-nested-vector [f coll]
-  (loop [vx coll acc []]
-    (if (not-empty vx)
-      (recur
-        (rest vx)
-        (conj acc (into [] (map f (first vx)))))
-      acc)))
