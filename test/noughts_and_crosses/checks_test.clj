@@ -34,6 +34,7 @@
                     ["-" "X" "-"]
                     ["-" "O" "-"]])
 
+
 ;; Test helper functions (count-pieces), (board-has-n-rows?), (board-has-n-columns?) -
 
 (deftest check-count
