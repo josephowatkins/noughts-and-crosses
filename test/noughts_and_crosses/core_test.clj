@@ -19,10 +19,12 @@
 (def map-illegal-o {:board legal-for-x :piece "O"})
 
 
-(deftest test-process-map
-  (is (= (:legal (process-map map-legal-x)) true))
-  (is (= (:legal (process-map map-illegal-x)) false))
-  (is (= (:legal (process-map map-legal-o)) true))
-  (is (= (:legal (process-map map-illegal-o)) false))
+(deftest test-process-map-should-throw-exception
+  (is (thrown? Exception ((check-board map-illegal-x))))
+  (is (thrown? Exception ((check-board map-illegal-o))))
   )
 
+(deftest test-process-map
+  (is (= (check-board map-legal-x) map-legal-x))
+  (is (= (check-board map-legal-o) map-legal-o))
+  )
