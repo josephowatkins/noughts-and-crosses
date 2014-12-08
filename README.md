@@ -4,7 +4,7 @@
 
 A RESTful service to generate the next move in a noughts and crosses game.
 
-Submit a board to a and the service will:
+Submit a board and the service will:
     
   1.  Check the move being requested is legal - e.g. placing an X on a board with 3 X's and 2 O's is illegal. 
   2.  Look up the board in DynamoDb.
