@@ -93,9 +93,10 @@
         (let [score (minmax (first boards) (swap-piece piece))]
           (recur (max score best-score) (rest boards)))))))
 
-(defn generate-next-board [board piece]
+(defn generate-next-board
   "Generates a map of all the boards and scores - returns the highest score board.
   Arbitrarily chooses between equally rated boards. "
+  [board piece]
   (let [all-next-boards (get-next-boards board piece)
         board-map (zipmap all-next-boards (map #(minmax % piece) all-next-boards))]
     (key (first (sort-by val > board-map)))))
