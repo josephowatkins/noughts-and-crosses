@@ -95,6 +95,7 @@
 ;; Define routes -
 
 (defroutes main-routes
+           (GET "/" [] (str "<h3>Welcome to noughts and crosses. Please submit a board to /X/ or /O/.</h3>"))
            (POST "/X/" request (process-request request "X"))
            (POST "/O/" request (process-request request "O"))
            (route/not-found "Incorrect end point"))
