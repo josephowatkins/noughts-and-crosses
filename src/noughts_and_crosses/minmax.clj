@@ -12,6 +12,8 @@
 (def wins (atom 0))
 (def losses (atom 0))
 (def draws (atom 0))
+(def get-next-boards-called (atom 0))
+(def get-available-moves-called (atom 0))
 
 
 (defn swap-piece [current-peice]
@@ -42,13 +44,7 @@
 
 (defn board-is-full
   "Returns true if the board is full - if run after
-  checking for winners true implies a draw."
-  [board]
-  (= 9 (count
-         (filter #(contains? piece-set %)
-                 (flatten board)))))
-
-(defn board-is-full-alt
+  checking for winners true implies a draw. (Improved version)"
   [board]
   (let [[[a b c]
          [d e f]
@@ -58,6 +54,8 @@
 (defn get-availible-moves
   "Get a list of available moves in the form ([0 0] ...)."
   [board]
+  ; TODO REMOVE
+  (swap! get-available-moves-called inc)
   (for
     [[x row] (map-indexed vector board)
      [y value] (map-indexed vector row)
@@ -65,13 +63,16 @@
     [x y]))
 
 (defn get-next-boards
-  "Get a list of all available boards."
+  "Get a list of all available boards. VERY SLOW! (300000 ≈ 3.2 seconds!!)"
   [board piece]
+  ; TODO REMOVE
+  (swap! get-next-boards-called inc)
+
   (loop [moves (get-availible-moves board) acc []]
     (if (empty? moves)
       acc
       (recur
-        (rest moves)
+        (next moves)
         (conj acc (assoc-in board (first moves) piece))))))
 
 (defn game-score
@@ -80,7 +81,7 @@
   (cond
     (has-player-won? board piece) (do (swap! wins inc) 1)
     (has-player-won? board (swap-piece piece)) (do (swap! losses inc) -1)
-    (board-is-full-alt board) (do (swap! draws inc) 0)
+    (board-is-full board) (do (swap! draws inc) 0)
     ))
 
 
@@ -96,8 +97,9 @@
   "Recursive minmax solution (!!Stack overflow defintely possible!!)
   For use with 3x3 boards only"
   [board piece]
-  ;TODO REMOVE
+  ;TODO REMOVE - mixmax-called 549945 times on empty board (same in java)
   (swap! minmax-called inc)
+
   ;; if game over return score
   (if-let [score (game-score board piece)]
     ; If game over return appropriate score.
@@ -107,8 +109,10 @@
       (if (empty? boards)
         ; Can we get rid of this (magic) number?
         (do
-          ;TODO REMOVE
+
+          ;TODO REMOVE - empty board reached 294777 (same in java)
           (swap! empty-boards inc)
+
           (* -1 best-score))
         (let [score (minmax (first boards) (swap-piece piece))]
           (recur (max score best-score) (rest boards)))))))

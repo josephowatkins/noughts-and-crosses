@@ -126,16 +126,22 @@
   (do
     (swap! minmax-called (fn [_] 0))
     (swap! empty-boards (fn [_] 0))
+    (swap! wins (fn [_] 0))
+    (swap! draws (fn [_] 0))
+    (swap! losses (fn [_] 0))
+    (swap! get-next-boards-called (fn [_] 0))
+    (swap! get-available-moves-called (fn [_] 0))
 
-    (def start (System/currentTimeMillis))
-    (generate-next-board empty-board "X")
-    (def end (System/currentTimeMillis))
-    (println (str "Time taken: " (- end start)))
+    (time (generate-next-board empty-board "X"))
+
     (println (str "Minmax called: " @minmax-called))
+    (println (str "get-next-boards called: " @get-next-boards-called))
+    (println (str "get-available-moves called: " @get-available-moves-called))
     (println (str "Wins: " @wins))
     (println (str "Losses: " @losses))
     (println (str "Draws: " @draws))
     (println (str "Empty boards: " @empty-boards))
+
 
     )
   )
