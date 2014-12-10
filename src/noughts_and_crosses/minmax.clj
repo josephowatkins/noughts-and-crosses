@@ -53,12 +53,8 @@
 (defn get-next-boards
   "Get a list of all available boards."
   [board piece]
-  (loop [moves (get-availible-moves board) acc []]
-    (if (empty? moves)
-      acc
-      (recur
-        (rest moves)
-        (conj acc (assoc-in board (first moves) piece))))))
+  (let [moves (get-availible-moves board)]
+      (map #(assoc-in board % piece) moves)))
 
 (defn game-score
   "Return game score for current player. Win = 1, lose = -1, draw = 0."
