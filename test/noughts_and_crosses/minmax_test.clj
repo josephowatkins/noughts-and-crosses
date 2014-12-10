@@ -137,6 +137,7 @@
     (println (str "Minmax called: " @minmax-called))
     (println (str "get-next-boards called: " @get-next-boards-called))
     (println (str "get-available-moves called: " @get-available-moves-called))
+    (println (str "get-available-moves-innerloop called: " @get-next-boards-innerloop-called))
     (println (str "Wins: " @wins))
     (println (str "Losses: " @losses))
     (println (str "Draws: " @draws))

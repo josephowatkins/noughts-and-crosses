@@ -14,6 +14,7 @@
 (def draws (atom 0))
 (def get-next-boards-called (atom 0))
 (def get-available-moves-called (atom 0))
+(def get-next-boards-innerloop-called (atom 0))
 
 
 (defn swap-piece [current-peice]
@@ -67,13 +68,19 @@
   [board piece]
   ; TODO REMOVE
   (swap! get-next-boards-called inc)
-
-  (loop [moves (get-availible-moves board) acc []]
-    (if (empty? moves)
-      acc
-      (recur
-        (next moves)
-        (conj acc (assoc-in board (first moves) piece))))))
+  ; alt version using map - still very slow
+  (let [moves (get-availible-moves board)]
+    (map #(assoc-in board % piece) moves))
+  ;
+  ;(loop [moves (get-availible-moves board) acc []]
+  ;  ; TODO REMOVE
+  ;  (swap! get-next-boards-innerloop-called inc)
+  ;  (if (empty? moves)
+  ;    acc
+  ;    (recur
+  ;      (next moves)
+  ;      (conj acc (assoc-in board (first moves) piece)))))
+  )
 
 (defn game-score
   "Return game score for current player. Win = 1, lose = -1, draw = 0."
