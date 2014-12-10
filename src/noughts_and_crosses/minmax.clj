@@ -34,11 +34,12 @@
 
 (defn board-is-full
   "Returns true if the board is full - if run after
-  checking for winners true implies a draw."
+  checking for winners true implies a draw. (Improved version)"
   [board]
-  (= 9 (count
-         (filter #(contains? piece-set %)
-                 (flatten board)))))
+  (let [[[a b c]
+         [d e f]
+         [g h i]] board]
+    (every? #(contains? piece-set %) [a b c d e f g h i])))
 
 (defn get-availible-moves
   "Get a list of available moves in the form ([0 0] ...)."
