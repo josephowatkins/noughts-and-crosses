@@ -6,6 +6,14 @@
 
 (def piece-set #{"X" "O"})
 
+;; TODO REMOVE THESE
+(def minmax-called (atom 0))
+(def empty-boards (atom 0))
+(def wins (atom 0))
+(def losses (atom 0))
+(def draws (atom 0))
+
+
 (defn swap-piece [current-peice]
   (if (= current-peice "X")
     "O"
@@ -40,6 +48,13 @@
          (filter #(contains? piece-set %)
                  (flatten board)))))
 
+(defn board-is-full-alt
+  [board]
+  (let [[[a b c]
+         [d e f]
+         [g h i]] board]
+    (every? #(contains? piece-set %) [a b c d e f g h i])))
+
 (defn get-availible-moves
   "Get a list of available moves in the form ([0 0] ...)."
   [board]
@@ -63,9 +78,9 @@
   "Return game score for current player. Win = 1, lose = -1, draw = 0."
   [board piece]
   (cond
-    (has-player-won? board piece) 1
-    (has-player-won? board (swap-piece piece)) -1
-    (board-is-full board) 0
+    (has-player-won? board piece) (do (swap! wins inc) 1)
+    (has-player-won? board (swap-piece piece)) (do (swap! losses inc) -1)
+    (board-is-full-alt board) (do (swap! draws inc) 0)
     ))
 
 
@@ -81,6 +96,8 @@
   "Recursive minmax solution (!!Stack overflow defintely possible!!)
   For use with 3x3 boards only"
   [board piece]
+  ;TODO REMOVE
+  (swap! minmax-called inc)
   ;; if game over return score
   (if-let [score (game-score board piece)]
     ; If game over return appropriate score.
@@ -89,7 +106,10 @@
     (loop [best-score -1 boards (get-next-boards board (swap-piece piece))]
       (if (empty? boards)
         ; Can we get rid of this (magic) number?
-        (* -1 best-score)
+        (do
+          ;TODO REMOVE
+          (swap! empty-boards inc)
+          (* -1 best-score))
         (let [score (minmax (first boards) (swap-piece piece))]
           (recur (max score best-score) (rest boards)))))))
 

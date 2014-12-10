@@ -116,3 +116,31 @@
   (is (= counter-o-win-in-one (generate-next-board o-win-in-one "X")))
   (is (= counter-x-win-in-one (generate-next-board x-win-in-one "O")))
   )
+
+(deftest minmax-emptyboard
+  (do
+    (println (generate-next-board empty-board "X")))
+  )
+
+(deftest time-taken
+  (do
+    (swap! minmax-called (fn [_] 0))
+    (swap! empty-boards (fn [_] 0))
+
+    (def start (System/currentTimeMillis))
+    (generate-next-board empty-board "X")
+    (def end (System/currentTimeMillis))
+    (println (str "Time taken: " (- end start)))
+    (println (str "Minmax called: " @minmax-called))
+    (println (str "Wins: " @wins))
+    (println (str "Losses: " @losses))
+    (println (str "Draws: " @draws))
+    (println (str "Empty boards: " @empty-boards))
+
+    )
+  )
+
+(deftest time-draw-function
+  (time (board-is-full empty-board))
+  (time (board-is-full full-board))
+  )
