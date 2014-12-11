@@ -41,7 +41,7 @@
          [g h i]] board]
     (every? #(contains? piece-set %) [a b c d e f g h i])))
 
-(defn get-availible-moves
+(defn get-available-moves
   "Get a list of available moves in the form ([0 0] ...)."
   [board]
   (for
@@ -53,7 +53,7 @@
 (defn get-next-boards
   "Get a list of all available boards."
   [board piece]
-  (let [moves (get-availible-moves board)]
+  (let [moves (get-available-moves board)]
       (map #(assoc-in board % piece) moves)))
 
 (defn game-score

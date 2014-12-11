@@ -81,10 +81,10 @@
 
 
 (deftest check-get-availble-moves
-  (is (= (get-availible-moves empty-board) empty-board-available-spaces))
-  (is (= (get-availible-moves full-board) full-board-available-spaces))
-  (is (= (get-availible-moves x-to-move-next) x-to-move-next-available-spaces))
-  (is (= (get-availible-moves o-to-move-next) o-to-move-next-available-spaces))
+  (is (= (get-available-moves empty-board) empty-board-available-spaces))
+  (is (= (get-available-moves full-board) full-board-available-spaces))
+  (is (= (get-available-moves x-to-move-next) x-to-move-next-available-spaces))
+  (is (= (get-available-moves o-to-move-next) o-to-move-next-available-spaces))
   )
 
 (deftest check-next-moves
